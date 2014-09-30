@@ -122,23 +122,21 @@ if __name__ == '__main__':
 
             if obfuscate_url:
                 chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-                rand_name = ''.join(random.choice(chars) for c in range(8))
-                key = bucket.new_key(rand_name + '.png')
+                name = ''.join(random.choice(chars) for c in range(8))
             else:
-                key = bucket.new_key(
-                    datetime.datetime.strftime(datetime.datetime.now(), '%m-%d-%Y-%H-%M-%S') + '.png'
-                )
+                name = datetime.datetime.strftime(datetime.datetime.now(), '%m-%d-%Y-%H-%M-%S')
 
+            key = bucket.new_key(name + '.png')
             key.set_contents_from_filename(f.name)
             key.set_canned_acl('public-read')
 
             public_url = key.generate_url(0, query_auth=False, force_http=True)
 
-            print 'Screenshot available at:'
             if shorten_url:
-                print 'Short URL:    {url}'.format(url=shorten(public_url))
-            else:
-                print 'URL:    {url}'.format(url=public_url)
+                public_url = shorten(public_url)
+
+            print 'Screenshot available at:'
+            print 'URL:    {url}'.format(url=public_url)
 
             if copy_to_clipboard:
                 os.system('echo "%s" | pbcopy' % public_url)
@@ -147,4 +145,7 @@ if __name__ == '__main__':
                 webbrowser.open(public_url)
 
             if trim_old_images:
-                print "Deleted " + str(len(trim_old_files(dhdo_screenshots_bucket, max_age, max_pics))) + " old images"
+                deleted = trim_old_files(dhdo_screenshots_bucket, max_age, max_pics)
+                print "Deleted {count} old images".format(
+                        count=str(len(deleted))
+                        )
