@@ -34,7 +34,7 @@ copy_to_clipboard = True
 obfuscate_url = True
 
 # Print a tiny URL using Google URL Shortener
-shorten_url = True
+shorten_url = False
 api_key = ''                                                 # Required if shorten_url == True
 goog_url = 'https://www.googleapis.com/urlshortener/v1/url'  # You probably don't need to change this
 
