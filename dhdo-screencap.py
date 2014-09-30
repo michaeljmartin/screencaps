@@ -68,12 +68,9 @@ def shorten(long_url):
     message = json.dumps({ 'longUrl' : long_url })
     headers = { 'Content-Type' : 'application/json' }
 
-    try:
-        r = requests.post(url, data=message, headers=headers)
-        contents = json.loads(r.text)
-        short_url = contents['id']
-    except:
-        short_url = None
+    r = requests.post(url, data=message, headers=headers)
+    contents = json.loads(r.text)
+    short_url = contents['id']
     return short_url
 
 
@@ -133,7 +130,11 @@ if __name__ == '__main__':
             public_url = key.generate_url(0, query_auth=False, force_http=True)
 
             if shorten_url:
-                public_url = shorten(public_url)
+                try:
+                    public_url = shorten(public_url)
+                except:
+                    print 'Error retrieving short URL from Google'
+
 
             print 'Screenshot available at:'
             print 'URL:    {url}'.format(url=public_url)
