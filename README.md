@@ -3,13 +3,14 @@ screencaps
 
 Integrates Mac OS X's screenshot utility with DreamObjects for easy sharing.
 The code is written in Python and utilizes the OS X built-in screencapture
-utility.  It requires the ``boto`` library:
+utility.  It requires the ``boto`` and ``requests`` librarie:
 
     $ pip install boto
-
+    $ pip install requests
 OR
 
     $ sudo easy_install boto
+    $ sudo easy_install requests
 
 
 The utility calls ``screencapture`` in interactive mode, the equivalent of
